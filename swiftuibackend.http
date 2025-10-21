@@ -1,0 +1,6 @@
+@swiftuibackend_HostAddress = http://localhost:5011
+
+GET {{swiftuibackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
