@@ -15,10 +15,10 @@ pipeline {
 
     post {
         success {
-            echo " Deployment for ${env.JOB_NAME} succeeded!"
+            echo " Deployment succeeded!"
         }
         failure {
-            echo " Deployment for ${env.JOB_NAME} failed."
+            echo " Deployment failed."
         }
     }
 }
