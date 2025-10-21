@@ -2,5 +2,5 @@
 public class something {
 public void fn() {
 }
-  public void test(){}
+  public void test(){string test ="";}
 }
