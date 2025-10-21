@@ -7,8 +7,8 @@ pipeline {
                 branch 'main'   
             }
             steps {
-                echo " Deploying ${env.JOB_NAME}..."
-                sh "/opt/deployments/scripts/deploy_${env.JOB_BASE_NAME}.sh"
+                echo " Deploying ..."
+                sh "/opt/deployments/scripts/deploy.sh"
             }
         }
     }
