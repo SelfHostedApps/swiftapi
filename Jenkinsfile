@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                credentialsId: 'GitHub-pat',    
+                credentialsId: 'GitHub-pat',     
                 url: 'https://github.com/SelfHostedApps/swiftapi.git'
             }
         }
