@@ -8,7 +8,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/SelfHostedApps/swiftapi.git'
+                git branch: 'main',
+                credentialsId: 'GitHub-pat',    
+                url: 'https://github.com/SelfHostedApps/swiftapi.git'
             }
         }
         stage('Deploy') {
