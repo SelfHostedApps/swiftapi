@@ -6,47 +6,130 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
+        stage('fetch data') {
             steps {
-                git branch: 'main',
-                credentialsId: 'GitHub-pat',     
-                url: 'https://github.com/SelfHostedApps/swiftapi.git'
+            // get essential data to 
+                script {
+                    echo """
+Step 1.1: extract webhook data 
+________________________________________________________
+"""
+                    echo """
+\twebhook data
+\t______________________________________________________
+\tAddressing changes of: ${env.BRANCH_NAME}
+\tRepository: ${env.GIT_URL}
+\tCommit: ${env.GIT_COMMIT}
+\tMade by: ${env.GIT_AUTHOR_NAME}
+\t______________________________________________________\n
+"""            
+                    echo """
+Step 1.2: building test version...
+--------------------------------------------------------
+"""               
+                    dir("test_temp"){
+                      git branch: env.BRANCH_NAME,
+                          credentialsId: 'GitHub-pat',
+                          url: env.GIT_URL,
+                    }
+
+                }
+            }
+            post {
+                success {
+                    echo "\t>> test branch pulled ${env.BRANCH_NAME} successful"
+                }
+                failure {
+                    echo "\t>> FAILED test branch pulled ${env.BRANCH_NAME} unsuccessfull"
+                }
+                always {
+                    echo "\t>> Stage finished at ${new Date().format("yyyy-MM-dd HH:mm:ss")}"
+                }
+            }
+
+        }
+      
+        stage('run tests') {
+            steps {
+                script  {        
+                    echo """
+Step 2.1: Running test
+________________________________________________________
+"""
+                    dir('test_temp') {
+                        sh'''
+                            dotnet test \
+                              --logger "trx;LogFileName=test_results.trx" \
+                              --results-directory "./TestResults" \
+                              --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
+                        '''
+                   }
+                   echo """
+Step 2.2: Test finished
+________________________________________________________
+"""
+                }
+            }
+            post {
+                always {
+                  echo "\t>> archiving results and cleaning up test folder..."
+                  junit 'test_temp/TestResults/*.trx'
+  
+                  sh 'rm -rf test_temp/TestResults'
+                }
+                success {
+                    echo "\t>> Success, test past with no errors"
+                    env.TEST_PASSED = true;
+                    //emailext {
+
+                    //}
+                }
+                failure {
+                    echo "\t Failure, some test failed"
+                    env.TEST_PASSED = false;
+                    //emailext{
+
+                    //} 
+                }     
             }
         }
-        stage('Build and Deploy Docker') {
+
+
+
+        stage('rebuild true version') {
             when {
-                branch 'main'
+                allOf {
+                    expression { env.BRANCH_NAME == 'main' }
+                    expression { env.TEST_PASSED == 'true' }
+                }
             }
             steps {
-                echo "Building and deploying Docker containers..."
-                
-                // Stop and remove any existing containers
-                sh '''
-                    echo "[1/3] Stopping existing containers..."
-                    docker compose down || true
-                '''
 
-                // Build new images and start containers
-                sh '''
-                    echo "[2/3] Building and starting new containers..."
-                    docker compose up --build -d --remove-orphans
-                '''
-
-                // Optional: Clean up old images
-                sh '''
-                    echo "[3/3] Cleaning up unused images..."
-                    docker image prune -f
-                '''
+                git branch: env.BRANCH_NAME,
+                credentialsId: 'GitHub-pat',
+                url: env.GIT_URL
+                script {
+                    echo """
+Step 3.1: Rebuilding project
+________________________________________________________
+"""
+                    echo "\t>> closing docker container..."
+                    docker compose down,
+                    echo "\t>> rebuilding docker container..."
+                    docker compose --build -d
+                }
             }
         }
-    }
+            post {
+                success {
 
-    post {
-        success {
-            echo " Deployment succeeded!"
-        }
-        failure {
-            echo " Deployment failed."
+
+                }
+                failure {
+
+                }
+
+            }
         }
     }
 }
