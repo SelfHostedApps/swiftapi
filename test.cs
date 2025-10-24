@@ -2,5 +2,6 @@
 public class something {
 public void fn() {
 }
-  public void test(){string test =" \testotttwowowowmrewwwwwerewg";}
+  public void test2(){}
+  public void test(){string test =" \tesrewg";}
 }
