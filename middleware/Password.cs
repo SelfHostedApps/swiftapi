@@ -9,12 +9,14 @@ public class Password {
 
         public static void Policies(string psw) {
         }
+}
 
+
+/*
         public static byte[] Hash(string psw) {
                 byte[] salt = new Byte[SALT_SIZE]; 
                 new Random().NextBytes(salt);
   
-                return Hash(,  salt);
         }
         
         public static byte[] Hash(byte[] psw, byte[] salt) {
@@ -36,5 +38,5 @@ public class Password {
                 
 
         }
+*/
 
-}

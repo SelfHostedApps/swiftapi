@@ -76,7 +76,7 @@ app.MapPost("/user/create", async (api.Db db, UserCreateRequest request) =>
 {       //---------------------- secure password ---------------------//
 
         //create a user
-        var user = new Data.User(request.email,request.username,request.password,request.preference);  
+        var user = new Data.User(request.email,request.username,request.password,request.preference,["user"]);  
         try {
                 await db.Users.AddAsync(user);
                 await db.SaveChangesAsync();
