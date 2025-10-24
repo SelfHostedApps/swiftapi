@@ -68,6 +68,7 @@ ________________________________________________________
                             dotnet test \
                               --logger "trx;LogFileName=test_results.trx" \
                               --results-directory "./TestResults" \
+                              --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
                         '''
                    }
                    echo """
@@ -78,28 +79,28 @@ ________________________________________________________
             }
             post {
                 always {
-                  echo "\t>> archiving results and cleaning up test folder..."
-                  junit 'test_temp/TestResults/*.trx'
-  
-                  sh 'rm -rf test_temp/TestResults'
+                    echo "\t>> archiving results and cleaning up test folder..."
+                    script {
+                        if (fileExists('test_temp/TestResults/test_results.trx')) {
+                            
+                            echo "\t>> Errors were found reporting them to jenkins"
+                            junit 'test_temp/TestResults/*.trx'
+
+                            sh 'rm -rf test_temp/TestResults'
+                            env.TEST_PASSED = 'false'
+
+                        } else {
+                            echo "\t>> All test passed with flying colors"
+                            env.TEST_PASSED = 'true'
+                        } 
+                    }
                 }
                 success {
-                    echo "\t>> Success, test past with no errors"
-                    script {
-                        env.TEST_PASSED = 'true';
-                    }
-                    //emailext {
+                    echo "\t>> Success, test stage is good"
 
-                    //}
                 }
                 failure {
-                    echo "\t Failure, some test failed"
-                    script {
-                        env.TEST_PASSED = 'false';
-                    }
-                    //emailext{
-
-                    //} 
+                    echo "\t>> Failure, test stage failed" 
                 }     
             }
         }
