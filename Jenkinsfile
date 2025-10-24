@@ -113,10 +113,9 @@ ________________________________________________________
 Step 3.1: Rebuilding project
 ________________________________________________________
 """
-                    echo "\t>> closing docker container..."
-                    docker compose down,
                     echo "\t>> rebuilding docker container..."
-                    docker compose --build -d
+                    sh 'docker compose down'
+                    sh 'docker compose --build -d'
                 }
             }
         }
