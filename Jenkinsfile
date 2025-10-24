@@ -3,6 +3,7 @@ pipeline {
     environment {
         COMPOSE_PROJECT_NAME = 'swiftapi'
         DOCKER_HOST = 'unix:///var/run/docker.sock'
+        DOTNET = '/usr/bin/dotnet'
     }
     
     stages {
@@ -65,7 +66,7 @@ ________________________________________________________
 """
                     dir('test_temp') {
                         sh'''
-                            dotnet test \
+                            ${DOTNET} test \
                               --logger "trx;LogFileName=test_results.trx" \
                               --results-directory "./TestResults" \
                               --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
