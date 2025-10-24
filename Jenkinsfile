@@ -6,6 +6,10 @@ pipeline {
     }
     
     stages {
+//
+//
+//
+//
         stage('fetch data') {
             steps {
             // get essential data to 
@@ -48,7 +52,10 @@ Step 1.2: building test version...
             }
 
         }
-      
+//
+//
+//
+//
         stage('run tests') {
             steps {
                 script  {        
@@ -79,14 +86,18 @@ ________________________________________________________
                 }
                 success {
                     echo "\t>> Success, test past with no errors"
-                    env.TEST_PASSED = true;
+                    script {
+                        env.TEST_PASSED = 'true';
+                    }
                     //emailext {
 
                     //}
                 }
                 failure {
                     echo "\t Failure, some test failed"
-                    env.TEST_PASSED = false;
+                    script {
+                        env.TEST_PASSED = 'false';
+                    }
                     //emailext{
 
                     //} 
