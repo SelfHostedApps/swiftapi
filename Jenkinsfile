@@ -68,7 +68,6 @@ ________________________________________________________
                             dotnet test \
                               --logger "trx;LogFileName=test_results.trx" \
                               --results-directory "./TestResults" \
-                              --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
                         '''
                    }
                    echo """
