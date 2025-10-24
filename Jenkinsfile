@@ -1,8 +1,7 @@
 pipeline {
     agent any
     environment {
-        COMPOSE_PROJECT_NAME = 'swiftapi'
-        DOCKER_HOST = 'unix:///var/run/docker.sock'
+        DOCKER = '/usr/bin/docker'
         DOTNET = '/usr/bin/dotnet'
     }
     
@@ -65,12 +64,12 @@ Step 2.1: Running test
 ________________________________________________________
 """
                     dir('test_temp') {
-                        sh'''
+                        sh"""
                             ${DOTNET} test \
                               --logger "trx;LogFileName=test_results.trx" \
                               --results-directory "./TestResults" \
                               --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
-                        '''
+                        """
                    }
                    echo """
 Step 2.2: Test finished
@@ -126,8 +125,8 @@ Step 3.1: Rebuilding project
 ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
-                    sh 'docker compose down'
-                    sh 'docker compose --build -d'
+                    sh "${DOCKER} compose down"
+                    sh "${DOCKER} compose --build -d"
                 }
             }
 
