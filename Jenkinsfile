@@ -30,7 +30,7 @@ Step 1.2: building test version...
                     dir("test_temp"){
                       git branch: env.BRANCH_NAME,
                           credentialsId: 'GitHub-pat',
-                          url: env.GIT_URL,
+                          url: env.GIT_URL
                     }
 
                 }
