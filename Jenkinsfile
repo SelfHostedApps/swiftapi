@@ -132,11 +132,15 @@ ________________________________________________________
 
             post {
                 success {
-
+                    script {
+                        echo "docker a successfully rebuild"
+                    }
 
                 }
                 failure {
-
+                    script {
+                        echo"failure docker couldnt rebuild"
+                    }
                 }
 
             }
