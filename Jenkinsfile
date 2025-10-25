@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
-        PODMAN = '/usr/bin/podman'
         DOTNET = '/usr/bin/dotnet'
     }
     
@@ -126,10 +125,7 @@ Step 3.1: Rebuilding project
 ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
-                    sh "${PODMAN}-compose -p ${CONTAINER_NAME} down || true"
-                    sh "podman network create ${CONTAINER_NAME}_default || true"
-                    sh "podman build -f Containerfile -t localhost/${CONTAINER_NAME} ."
-                    sh "${PODMAN}-compose -p ${CONTAINER_NAME} up --build -d"
+                    sh "bash ./scripts/run_app.sh"
                 }
             }
 
