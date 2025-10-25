@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        CONTAINER_NAME = "${env.BRANCH_NAME}"
+        CONTAINER_NAME = "${env.JOB_NAME}"
         PODMAN = '/usr/bin/podman'
         DOTNET = '/usr/bin/dotnet'
     }
