@@ -1,6 +1,7 @@
 pipeline {
     agent any
     environment {
+        CONTAINER_NAME = "${env.BRANCH_NAME}"
         PODMAN = '/usr/bin/podman'
         DOTNET = '/usr/bin/dotnet'
     }
@@ -125,8 +126,8 @@ Step 3.1: Rebuilding project
 ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
-                    sh "${PODMAN}-compose down"
-                    sh "${PODMAN}-compose up --build -d"
+                    sh "${PODMAN}-compose -p ${CONTAINER_NAME} down || true"
+                    sh "${PODMAN}-compose -p ${CONTAINER_NAME} up --build -d"
                 }
             }
 
