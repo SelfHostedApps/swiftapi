@@ -125,8 +125,8 @@ Step 3.1: Rebuilding project
 ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
-                    sh "${PODMAN} compose down"
-                    sh "${PODMAN} compose up --build -d"
+                    sh "${PODMAN}-compose down"
+                    sh "${PODMAN}-compose up --build -d"
                 }
             }
 
