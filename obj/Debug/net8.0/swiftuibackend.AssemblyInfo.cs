@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("swiftuibackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9315d8f7742a32383d91efddf4a0ee23e5261e67")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+91d5a87790916c454de190846c0c2cf0ab0a225c")]
 [assembly: System.Reflection.AssemblyProductAttribute("swiftuibackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("swiftuibackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
