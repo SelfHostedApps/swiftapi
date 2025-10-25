@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        CONTAINER_NAME = "${env.JOB_NAME}"
+        CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
         PODMAN = '/usr/bin/podman'
         DOTNET = '/usr/bin/dotnet'
     }
