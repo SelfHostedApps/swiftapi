@@ -1,0 +1,5 @@
+test_temp/
+bin/
+obj/
+.git/
+.vscode/
