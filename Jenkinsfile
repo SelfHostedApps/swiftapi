@@ -127,6 +127,7 @@ ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
                     sh "${PODMAN}-compose -p ${CONTAINER_NAME} down || true"
+                    sh "podman build -f Containerfile -t localhost/${CONTAINER_NAME} ."
                     sh "${PODMAN}-compose -p ${CONTAINER_NAME} up --build -d"
                 }
             }
