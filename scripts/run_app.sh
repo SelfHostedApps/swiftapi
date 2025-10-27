@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-PODMAN=/usr/bin/podman
+PODMAN=podman
 
 echo ">> creating pod"
 #create pod
