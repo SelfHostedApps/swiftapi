@@ -1,6 +1,8 @@
 pipeline {
     agent any
     environment {
+        DOCKER_HOST = "unix:///var/run/docker.sock"
+
         CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
         DOTNET = '/usr/bin/dotnet'
     }
@@ -125,6 +127,9 @@ Step 3.1: Rebuilding project
 ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
+
+                    echo "Current directory: $(pwd)"
+                    echo "Running rebuild script..."
                     sh "bash ./scripts/run_app.sh"
                 }
             }
