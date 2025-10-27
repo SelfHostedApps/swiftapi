@@ -128,7 +128,6 @@ ________________________________________________________
 """
                     echo "\t>> rebuilding docker container..."
 
-                    echo "Current directory: $(pwd)"
                     echo "Running rebuild script..."
                     sh "bash ./scripts/run_app.sh"
                 }
