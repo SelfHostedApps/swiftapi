@@ -1,26 +1,28 @@
 #!/bin/bash
 
+PODMAN=/usr/bin/podman
+
 echo ">> creating pod"
 #create pod
-podman pod create --replace \
+$PODMAN pod create --replace \
   --name swiftapiapp \
   -p 5011:5011
   
 echo "Creating Images"
 echo "--------------------------------"
 echo ">> creating swiftapi image"
-podman build -t dotnet-app-image -f ./images/dotnet-image .
+$PODMAN build -t dotnet-app-image -f ./images/dotnet-image .
 
 echo "Creating Containers"
 echo "--------------------------------"
 echo ">> creating swiftapi container"
-podman run --replace -d \
+$PODMAN run --replace -d \
   --name swiftapi \
   --pod swiftapiapp \
   dotnet-app-image  
 
 echo ">> creating postgres container"
-podman run --replace -d \
+$PODMAN run --replace -d \
   --name postgres \
   --pod swiftapiapp \
   -e POSTGRES_USER=swiftuser \
