@@ -28,12 +28,13 @@ public class AuthService {
                         SecurityAlgorithms.HmacSha256Signature
                 );
                 
-                //
                 var tokenDescriptor = new SecurityTokenDescriptor 
                 {
                         Subject = GenerateClaims(user),//content
                         Expires = DateTime.UtcNow.AddMinutes(15),//lifespan
                         SigningCredentials = credentials,//the algo used
+                        Issuer   = _config["Jwt:Issuer"],
+                        Audience = _config["Jwt:Audience"],
                 };
 
                 var token = handler.CreateToken(tokenDescriptor);
@@ -44,12 +45,9 @@ public class AuthService {
         private static ClaimsIdentity GenerateClaims(Data.UserDto user)
         {
                 var claims = new ClaimsIdentity();
-                claims.AddClaim(new Claim(ClaimTypes.Name, user.email));
 
-                foreach (string role in user.roles) 
-                {
-                        claims.AddClaim(new Claim(ClaimTypes.Role, role));
-                }
+                claims.AddClaim(new Claim(ClaimTypes.Name, user.email));
+                claims.AddClaim(new Claim(ClaimTypes.Role, user.role));
 
                 return claims;
         }
