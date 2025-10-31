@@ -236,7 +236,7 @@ app.MapPost("/task/create", async (
       //trop paresseux pour changer
       Data.User? user = await db.Users.FirstOrDefaultAsync(u => u.email == email);
       if (user is null) {
-            return Results.Problem("user doesnt exist");
+            return Results.NotFound("user not found");
       }
       //---------------- create task ------------------//
       Data.Tasks task = new Data.Tasks(request.text,user.id,false, DateTime.UtcNow); 
@@ -254,7 +254,7 @@ app.MapPost("/task/create", async (
 app.MapPatch("/task/completed/{id}", async ([FromServices]api.Db db, string id) =>
 {
         if (!int.TryParse(id, out int output)) {
-              return Results.Problem("Invalid ID");
+              return Results.NotFound("Invalid ID");
         }
 
         int row = await db.Tasks
