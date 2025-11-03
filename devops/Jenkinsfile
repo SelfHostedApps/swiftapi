@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HOST = "unix:///var/run/docker.sock"
-        BUILD_DIR = "/var/lib/jenkins/builds/test/"
+        BUILD_DIR = "${env.WORKSPACE}/builds/test"
         CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
         DOTNET = '/usr/bin/dotnet'
     }
