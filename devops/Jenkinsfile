@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HOST = "unix:///var/run/docker.sock"
-
+        BUILD_DIR = "/var/lib/jenkins/builds/test/"
         CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
         DOTNET = '/usr/bin/dotnet'
     }
@@ -30,10 +30,10 @@ stages {
                                 --------------------------------------------------------
                                 """           
 
-                                dir("test_temp"){
-                                git branch: env.BRANCH_NAME,
-                                credentialsId: 'GitHub-pat',
-                                url: env.GIT_URL
+                                dir(env.BUILD_DIR){
+                                        git branch: env.BRANCH_NAME,
+                                        credentialsId: 'GitHub-pat',
+                                        url: env.GIT_URL
                                 }
 
                         }
@@ -57,15 +57,13 @@ stages {
                                 echo """
                                 Step 2.1: Running unit test
                                 ________________________________________________________
+                                """ 
+                                sh"""
+                                ${DOTNET} test \
+                                --logger "trx;LogFileName=test_results.trx" \
+                                --results-directory "./TestResults" \
+                                --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorsOnly"
                                 """
-                                dir('test_temp') {
-                                        sh"""
-                                        ${DOTNET} test \
-                                        --logger "trx;LogFileName=test_results.trx" \
-                                        --results-directory "./TestResults" \
-                                        --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorsOnly"
-                                        """
-                                }
                         }
                 }
                 post {
@@ -73,16 +71,15 @@ stages {
                                 echo "\t>> archiving results and cleaning up test folder..."
                                 script {
                                         
-                                        def results = junit allowEmptyResults: true, testResults: 'test_temp/TestResults/*.trx'
+                                        def results = junit allowEmptyResults: true, testResults: 'TestResults/*.trx'
                                         if(results.failCount > 0){
-                                                echo "\t>> Errors were found reporting them to jenkins" 
-                                                sh 'rm -rf test_temp/TestResults'
+                                                echo "\t>> Errors were found reporting them to jenkins"  
                                                 env.UNIT_TEST_PASSED = 'false'
                                         } else {
                                                 echo "\t>> All test passed with flying colors"
-                                                sh 'rm -rf test_temp/TestResults'
                                                 env.UNIT_TEST_PASSED = 'true'
                                         } 
+                                        sh 'rm -rf test_temp/TestResults'
                                 }
                         }
                         success {
