@@ -228,6 +228,12 @@ app.MapPost("/task/create", async (
        ClaimsPrincipal principal,
       [FromBody]TaskCreateRequest request)=>
 {
+      if (request.desc is null) {
+            return Results.Problem("invalid request");
+      }      
+      if (request.title is null) {
+            return Results.Problem("invalid request");
+      }
       string? email = principal.Identity?.Name;
       if (email is null) {
             return Results.Problem("invalid token");
@@ -239,7 +245,7 @@ app.MapPost("/task/create", async (
             return Results.NotFound("user not found");
       }
       //---------------- create task ------------------//
-      Data.Tasks task = new Data.Tasks(request.text,user.id,false, DateTime.UtcNow); 
+      Data.Tasks task = new Data.Tasks( request.title, request.desc ,user.id,false, DateTime.UtcNow); 
       
       await db.Tasks.AddAsync(task);
       await db.SaveChangesAsync();
@@ -266,6 +272,22 @@ app.MapPatch("/task/completed/{id}", async ([FromServices]api.Db db, string id) 
 
 }).RequireAuthorization(p => p.RequireRole("user"));
 
+app.MapDelete("/task/delete/{id}", async ([FromServices]api.Db db, string id) =>
+{
+        if (!int.TryParse(id, out int output)) {
+              return Results.NotFound("Invalid ID");
+        }
+
+        Data.Tasks? task = await db.Tasks.FindAsync(output);
+        if (task is null) {
+                return Results.Problem("null task");
+        }
+
+        db.Tasks.Remove(task);
+        await db.SaveChangesAsync();
+
+        return Results.Ok();
+}).RequireAuthorization(p => p.RequireRole("user"));
 
 
 

@@ -12,6 +12,9 @@ public class Tasks {
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
+        [Required]
+        [Column("title")]
+        public string title { get; set; }
         
         [Required]
         [Column("description")]
@@ -35,13 +38,14 @@ public class Tasks {
 
         public Tasks() {}
         
-        public Tasks(string text, int user_id, bool completed, DateTime task_date) {
+        public Tasks(string title, string text, int user_id, bool completed, DateTime task_date) {
+                this.title = title;
                 this.text = text;
                 this.user_id = user_id;
                 this.completed = completed;
                 this.task_date = task_date;
         }
         public TaskDto IntoTaskDto()
-                => new TaskDto(this.id, this.text, this.completed, this.task_date, this.user_id);
+                => new TaskDto(this.id,this.title, this.text, this.completed, this.task_date, this.user_id);
 }
-public record TaskDto(int id, string text, bool completed, DateTime task_date, int user_id);
+public record TaskDto(int id, string title, string text, bool completed, DateTime task_date, int user_id);

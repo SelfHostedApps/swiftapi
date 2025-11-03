@@ -143,7 +143,7 @@ get completed task
 **Response:**
 | type | data |
 |------|------|
-| 200 | "tasks": { {id, desc, ...} } |
+| 200 | "tasks": { id, description, completed, DateTime, user_id } } |
 | 404 | Unauthorize acces (Invalid token) |
 
 ---
@@ -157,7 +157,7 @@ Gets all noncompleted task
 **Response:**
 | type | data |
 |------|------|
-| 200 | "task": {id, desc, ...} |
+| 200 | "task": { id, description, completed, DateTime, user_id } |
 | 404 | Unauthorize acces (Invalid token) |
 
 ---
@@ -171,7 +171,7 @@ find every task associated with an email
 **Response:**
 | type | data |
 |------|------|
-| 200 | "tasks": { {id, desc, ...} } |
+| 200 | "tasks": { { id, description, completed, DateTime, user_id } } |
 | 404 | Unauthorize acces (Invalid token) |
 
 ---
@@ -185,7 +185,7 @@ find all task between both min and max
 **Response:**
 | type | data |
 |------|------|
-| 200 | "tasks": { {id, desc, ...} } |
+| 200 | "tasks": { { id, description, completed, DateTime, user_id } } |
 | 404 | Unauthorize acces (Invalid token) |
 
 ---
@@ -199,7 +199,7 @@ find all token for the last week
 **Response:**
 | type | data |
 |------|------|
-| 200 | "tasks": { {id, desc, ...} } |
+| 200 | "tasks": { { id, description, completed, DateTime, user_id } } |
 | 404 | Unauthorize acces (Invalid token) |
 
 

@@ -2414,19 +2414,19 @@
     ]
   },
   "packageFolders": {
-    "/home/lililatortue/.nuget/packages/": {}
+    "/Users/williamdescoteaux/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/lililatortue/Dev/C#/school/swiftapi/swiftuibackend.csproj",
+      "projectUniqueName": "/Users/williamdescoteaux/Dev/dotnet/swiftuibackend/swiftuibackend.csproj",
       "projectName": "swiftuibackend",
-      "projectPath": "/home/lililatortue/Dev/C#/school/swiftapi/swiftuibackend.csproj",
-      "packagesPath": "/home/lililatortue/.nuget/packages/",
-      "outputPath": "/home/lililatortue/Dev/C#/school/swiftapi/obj/",
+      "projectPath": "/Users/williamdescoteaux/Dev/dotnet/swiftuibackend/swiftuibackend.csproj",
+      "packagesPath": "/Users/williamdescoteaux/.nuget/packages/",
+      "outputPath": "/Users/williamdescoteaux/Dev/dotnet/swiftuibackend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/lililatortue/.nuget/NuGet/NuGet.Config"
+        "/Users/williamdescoteaux/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2444,7 +2444,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -2500,6 +2506,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.21, 8.0.21]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[8.0.21, 8.0.21]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.21, 8.0.21]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2508,7 +2528,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.120/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
@@ -2517,7 +2537,7 @@
       "code": "NU1603",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "swiftuibackend depends on Swashbuckle.AspNetCore (>= 8.0.6) but Swashbuckle.AspNetCore 8.0.6 was not found. An approximate best match of Swashbuckle.AspNetCore 8.1.0 was resolved.",
+      "message": "swiftuibackend depends on Swashbuckle.AspNetCore (>= 8.0.6) but Swashbuckle.AspNetCore 8.0.6 was not found. Swashbuckle.AspNetCore 8.1.0 was resolved instead.",
       "libraryId": "Swashbuckle.AspNetCore",
       "targetGraphs": [
         "net8.0"

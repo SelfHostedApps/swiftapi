@@ -9,6 +9,7 @@ CREATE TABLE Users (
 
 CREATE TABLE Tasks (
         id SERIAL PRIMARY KEY,
+        title VARCHAR(50),
         description TEXT,
         completed BOOLEAN DEFAULT FALSE,
         task_date TIMESTAMP,

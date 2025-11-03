@@ -10,7 +10,7 @@ podman pod create --replace \
 echo "Creating Images"
 echo "--------------------------------"
 echo ">> creating swiftapi image"
-podman build -t dotnet-app-image -f ./images/dotnet-image .
+podman build -t dotnet-app-image -f ./devops/images/dotnet-image .
 
 echo "Creating Containers"
 echo "--------------------------------"
@@ -29,5 +29,5 @@ podman run --replace -d \
   -e POSTGRES_DB=swiftdb \
   -e PGPORT=5432 \
   -v swiftdb_data:/var/lib/postgresql/data:Z \
-  -v ./init.sql:/docker-entrypoint-initdb.d/init.sql:Z \
+  -v ./devops/init.sql:/docker-entrypoint-initdb.d/init.sql:Z \
   docker.io/postgres:16
