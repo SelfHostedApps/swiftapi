@@ -63,7 +63,7 @@ stages {
                                         ${DOTNET} test \
                                         --logger "trx;LogFileName=test_results.trx" \
                                         --results-directory "./TestResults" \
-                                        --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorOnly"
+                                        --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorsOnly"
                                         """
                                 }
                         }
