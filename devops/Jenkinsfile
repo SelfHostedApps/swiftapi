@@ -1,0 +1,177 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_HOST = "unix:///var/run/docker.sock"
+
+        CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
+        DOTNET = '/usr/bin/dotnet'
+    }
+    
+stages {
+        stage('build') {
+                steps {
+                // get essential data to 
+                        script {
+                                echo """
+                                Step 1.1: extract webhook data 
+                                ________________________________________________________
+                                """
+                                echo """
+                                webhook data
+                                ______________________________________________________
+                                Addressing changes of: ${env.BRANCH_NAME}
+                                Repository: ${env.GIT_URL}
+                                Commit: ${env.GIT_COMMIT}
+                                Made by: ${env.GIT_AUTHOR_NAME}
+                                ______________________________________________________\n
+                                """            
+                                echo """
+                                Step 1.2: building test version...
+                                --------------------------------------------------------
+                                """           
+
+                                dir("test_temp"){
+                                git branch: env.BRANCH_NAME,
+                                credentialsId: 'GitHub-pat',
+                                url: env.GIT_URL
+                                }
+
+                        }
+                }
+                post {
+                        success {
+                                echo ">> test branch pulled ${env.BRANCH_NAME} successful"
+                        }
+                        failure {
+                                echo ">> FAILED test branch pulled ${env.BRANCH_NAME} unsuccessfull"
+                        }
+                        always {
+                                echo ">> Stage finished at ${new Date().format("yyyy-MM-dd HH:mm:ss")}"
+                        }
+                }
+
+        }
+        stage('unit test') {
+                steps {
+                        script  {        
+                                echo """
+                                Step 2.1: Running unit test
+                                ________________________________________________________
+                                """
+                                dir('test_temp') {
+                                        sh"""
+                                        ${DOTNET} test \
+                                        --logger "trx;LogFileName=test_results.trx" \
+                                        --results-directory "./TestResults" \
+                                        --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorsOnly"
+                                        """
+                                }
+                        }
+                }
+                post {
+                        always {
+                                echo "\t>> archiving results and cleaning up test folder..."
+                                script {
+                                        
+                                        def results = junit allowEmptyResults: true, testResults: 'test_temp/TestResults/*.trx'
+                                        if(results.failCount > 0){
+                                                echo "\t>> Errors were found reporting them to jenkins" 
+                                                sh 'rm -rf test_temp/TestResults'
+                                                env.UNIT_TEST_PASSED = 'false'
+                                        } else {
+                                                echo "\t>> All test passed with flying colors"
+                                                sh 'rm -rf test_temp/TestResults'
+                                                env.UNIT_TEST_PASSED = 'true'
+                                        } 
+                                }
+                        }
+                        success {
+                                echo "\t>> Success, test stage is good"
+                        }
+                        failure {
+                                echo "\t>> Failure, test stage failed" 
+                        }     
+                }
+        }
+
+        stage('integration test') {
+                when {
+                        allOf {
+                                expression { env.BRANCH_NAME == 'main' }
+                                expression { env.UNIT_TEST_PASSED == 'true' }
+                        } 
+                }
+                steps {
+                        scripts {
+                                echo"""
+                                Step 2.1: Running E2E test
+                                ________________________________________________________
+                                """
+                                dir('test_temp') {
+                                        sh """
+                                        bash ./devops/scripts/run_test_env.sh
+                                        bash ./devops/scripts/run_integration_test.sh
+                                        podman pod rm -f swift-api-test
+                                        """
+                                }
+                        }
+                }
+                post {
+                        success {
+                                echo "\t>> integration test passed"
+                                script {
+                                        env.E2E_TEST_PASSED = 'true'
+                                }
+                        }
+                        failure {
+                                echo "\t>> integration test failed"
+                                script {
+                                        env.E2E_TEST_PASSED = 'false'
+                                }
+                        }
+                }
+        }
+
+        stage('deploy') {
+                when {
+                        allOf {
+                                expression { env.BRANCH_NAME == 'main' }
+                                expression { env.UNIT_TEST_PASSED == 'true' }
+                                expression { env.E2E_TEST_PASSED == 'true' }
+                        }
+                }
+                steps {
+
+                        git branch: env.BRANCH_NAME,
+                        credentialsId: 'GitHub-pat',
+                        url: env.GIT_URL
+                        script {
+                                echo """
+                                Step 3.1: Rebuilding project
+                                ________________________________________________________
+                                """
+                                echo "\t>> rebuilding docker container..."
+
+                                echo "Running rebuild script..."
+                                sh "bash ./devops/scripts/run_app.sh"
+                        }
+                }
+
+                post {
+                        success {
+                                script {
+                                        echo "docker a successfully rebuild"
+                                }
+
+                        }
+                        failure {
+                                script {
+                                        echo"failure docker couldnt rebuild"
+                                }
+                        }
+
+                }
+        }
+}
+}
+
