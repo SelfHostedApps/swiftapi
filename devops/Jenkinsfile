@@ -102,7 +102,7 @@ stages {
                         } 
                 }
                 steps {
-                        scripts {
+                        script {
                                 echo"""
                                 Step 2.1: Running E2E test
                                 ________________________________________________________
