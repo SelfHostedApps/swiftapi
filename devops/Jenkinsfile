@@ -74,8 +74,8 @@ stages {
                                 script {
                                         if (fileExists('test_temp/TestResults/test_results.trx')) { 
                                                 echo "\t>> Errors were found reporting them to jenkins"
-                                                junit 'test_temp/TestResults/*.trx'
-
+                                                junit 'test_temp/TestResults/*.trx' || true
+                                                
                                                 sh 'rm -rf test_temp/TestResults'
                                                 env.UNIT_TEST_PASSED = 'false'
                                         } else {
