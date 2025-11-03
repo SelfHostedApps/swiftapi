@@ -118,11 +118,15 @@ stages {
                 post {
                         success {
                                 echo "\t>> integration test passed"
-                                env.E2E_TEST_PASSED = 'true'
+                                script {
+                                        env.E2E_TEST_PASSED = 'true'
+                                }
                         }
                         failure {
                                 echo "\t>> integration test failed"
-                                env.E2E_TEST_PASSED = 'false'
+                                script {
+                                        env.E2E_TEST_PASSED = 'false'
+                                }
                         }
                 }
         }
