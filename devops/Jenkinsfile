@@ -111,12 +111,16 @@ stages {
                                         sh """
                                         bash ./devops/scripts/run_test_env.sh
                                         bash ./devops/scripts/integration_test.sh
-                                        podman pod rm -f swift-api-test
                                         """
                                 }
                         }
                 }
                 post {
+                        always {
+                                script {
+                                        sh 'podman pod rm -f swift-api-test'
+                                }
+                        }
                         success {
                                 echo "\t>> integration test passed"
                                 script {

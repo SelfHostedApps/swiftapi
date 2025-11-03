@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
+# go to .git level of project
+cd "$(git rev-parse --show-toplevel 2>dev>null || echo "$(dirname "$0")/../..")"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "testing users endpoint"
 token=$(bash "$SCRIPT_DIR/integration_test/user.sh")
