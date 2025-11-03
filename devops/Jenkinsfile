@@ -95,7 +95,7 @@ stages {
                 }
         }
 
-        stage('integration test') {
+        stage('E2E test') {
                 when {
                         allOf {
                                 expression { env.BRANCH_NAME == 'main' }
@@ -108,7 +108,7 @@ stages {
                                 Step 2.1: Running E2E test
                                 ________________________________________________________
                                 """
-                                dir('test_temp') {
+                                ws(env.TEST_WS) {
                                         sh """
                                         bash ./devops/scripts/run_test_env.sh
                                         bash ./devops/scripts/integration_test.sh
