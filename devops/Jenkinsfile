@@ -110,7 +110,7 @@ stages {
                                 dir('test_temp') {
                                         sh """
                                         bash ./devops/scripts/run_test_env.sh
-                                        bash ./devops/scripts/run_integration_test.sh
+                                        bash ./devops/scripts/integration_test.sh
                                         podman pod rm -f swift-api-test
                                         """
                                 }
