@@ -72,9 +72,10 @@ stages {
                         always {
                                 echo "\t>> archiving results and cleaning up test folder..."
                                 script {
+                                        sh 'pwd'
                                         if (fileExists('test_temp/TestResults/test_results.trx')) { 
                                                 echo "\t>> Errors were found reporting them to jenkins"
-                                                junit 'test_temp/TestResults/*.trx' || true
+                                                junit allowEmptyResults: true, testResults: 'test_temp/TestResults/*.trx'
                                                 
                                                 sh 'rm -rf test_temp/TestResults'
                                                 env.UNIT_TEST_PASSED = 'false'
