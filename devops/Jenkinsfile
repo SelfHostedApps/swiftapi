@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HOST = "unix:///var/run/docker.sock"
-        BUILD_DIR = "${env.WORKSPACE}/builds/test"
+        TEST_WS = "${env.JENKINS_HOME}/workspace/swiftapitest"
         CONTAINER_NAME = "${env.JOB_NAME.replaceAll('[^a-zA-Z0-9_-]', '_').toLowerCase()}"
         DOTNET = '/usr/bin/dotnet'
     }
@@ -30,7 +30,8 @@ stages {
                                 --------------------------------------------------------
                                 """           
 
-                                dir(env.BUILD_DIR){
+                                ws(env.TEST_WS){
+                                        sh 'rm -rf *'
                                         git branch: env.BRANCH_NAME,
                                         credentialsId: 'GitHub-pat',
                                         url: env.GIT_URL
@@ -53,11 +54,12 @@ stages {
         }
         stage('unit test') {
                 steps {
-                        script  {        
+                        script  {
                                 echo """
                                 Step 2.1: Running unit test
                                 ________________________________________________________
-                                """ 
+                                """
+                        ws(env.TEST_WS) {
                                 sh"""
                                 ${DOTNET} test \
                                 --logger "trx;LogFileName=test_results.trx" \
@@ -65,12 +67,13 @@ stages {
                                 --logger "console;verbosity=detailed;consoleLoggerParameters=ErrorsOnly"
                                 """
                         }
+                        }
                 }
                 post {
                         always {
                                 echo "\t>> archiving results and cleaning up test folder..."
                                 script {
-                                        
+                                ws(env.TEST_WS) {        
                                         def results = junit allowEmptyResults: true, testResults: 'TestResults/*.trx'
                                         if(results.failCount > 0){
                                                 echo "\t>> Errors were found reporting them to jenkins"  
@@ -80,6 +83,7 @@ stages {
                                                 env.UNIT_TEST_PASSED = 'true'
                                         } 
                                         sh 'rm -rf test_temp/TestResults'
+                                }
                                 }
                         }
                         success {
