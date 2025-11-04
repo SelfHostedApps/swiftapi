@@ -12,7 +12,7 @@ echo "dotnet image"
 podman build -t dotnet-app-image -f ./devops/images/dotnet-image .
 
 echo "database image"
-podman build -t postgres-image -f ./devops/images/postgres-image .
+podman build -t postgres-test-image -f ./devops/images/postgres-image .
 
 echo "Create test containers"
 echo "-------------------------------"
