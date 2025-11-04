@@ -109,8 +109,10 @@ stages {
                                 """
                                 ws(env.TEST_WS) {
                                         sh """
+                                        set -xe
                                         bash ./devops/scripts/run_test_env.sh
-                                        bash ./devops/scripts/integration_test.sh
+                                        
+                                        bash -x ./devops/scripts/integration_test.sh
                                         """
                                 }
                         }
