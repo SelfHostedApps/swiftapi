@@ -11,9 +11,10 @@ podman build -t dotnet-app-image -f ./devops/images/dotnet-image .
 echo "Create test containers"
 echo "-------------------------------"
 echo ">> create swift-test-app"
-podman run -d \
+podman run --replace -d \
  --name swift-test-api \
  --pod swift-test-pod \
+ -e ConnectionStrings__Default="Host=postgres-test;Port=5432;Database=swiftdb;Username=swiftuser;Password=swiftpass" \
  dotnet-app-image
 
 echo ">> create postgres test db"
@@ -24,4 +25,5 @@ podman run --replace -d \
  -e POSTGRES_PASSWORD=swiftpass \
  -e POSTGRES_DB=swiftdb \
  -e PGPORT=5432 \
+ -v $(pwd)/../init.sql:/docker-entrypoint-initdb.d/init.sql:ro \
  docker.io/postgres:16

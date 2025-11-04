@@ -11,7 +11,7 @@ CREATE_TASK=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -H "Content-Type: application/json" \
  -H "Authorization: $TOKEN" \
  -d '{"title": "test", "desc": "this is a test"}' \
- http://127.0.0.1:5011/task/create)
+ http://127.0.0.1:5012/task/create)
 
 STATUS=$(echo "$CREATE_TASK" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
 BODY=$(echo "$CREATE_TASK"   | sed -e "s/HTTPSTATUS:.*//g")
@@ -22,7 +22,7 @@ if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 300 ]; then
         echo ">> $BODY"
         exit 1
 else
-        echo ">> creating a task successful"
+        echo ">> creating a task  is successful"
 fi
 
 
@@ -33,7 +33,7 @@ echo "==Task update=="
 UPDATE_TASK=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -X PATCH \
  -H "Authorization: $TOKEN" \
- http://127.0.0.1:5011/task/completed/1)
+ http://127.0.0.1:5012/task/completed/1)
 
 
 STATUS=$(echo "$UPDATE_TASK" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
@@ -41,11 +41,11 @@ BODY=$(echo "$UPDATE_TASK"   | sed -e "s/HTTPSTATUS:.*//g")
 
 
 if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 300 ]; then
-        echo ">> creating failed ($STATUS)"
+        echo ">> updating failed ($STATUS)"
         echo ">> $BODY"
         exit 1
 else
-        echo "creating a task successful"
+        echo "updating a task is successful"
 fi
 
 
@@ -56,7 +56,7 @@ GET_ALL_TASK=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -X GET \
  -H "Content-Type: application/json" \
  -H "Authorization: $TOKEN" \
- http://127.0.0.1:5011/task/all)
+ http://127.0.0.1:5012/task/all/1/10)
 
 STATUS=$(echo "$GET_ALL_TASK" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
 BODY=$(echo "$GET_ALL_TASK"   | sed -e "s/HTTPSTATUS:.*//g")
@@ -77,7 +77,7 @@ echo "==task delete=="
 DELETE_TASK=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -X DELETE \
  -H "Authorization: $TOKEN" \
- http://127.0.0.1:5011/task/delete/1)
+ http://127.0.0.1:5012/task/delete/1)
 
 
 STATUS=$(echo "$DELETE_TASK" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)

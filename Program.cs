@@ -108,9 +108,9 @@ app.MapPost("/user/signup", async ([FromServices]api.Db db, [FromBody]UserCreate
               await db.SaveChangesAsync();
 
               return Results.Created($"User created {user.username}",user.IntoDto());
-        } catch(DbUpdateException) {
+        } catch(DbUpdateException ex) {
         
-              return Results.Problem("Email already taken");
+              return Results.Problem($"Email already taken {ex.ToString()}");
         } catch {
 
               return Results.Problem("internal error");        
