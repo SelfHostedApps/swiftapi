@@ -2,12 +2,13 @@
 
 #realligning directory
 cd "$(dirname $0)"
-
+echo "$(pwd)"
 INIT_SQL=$(realpath ../init.sql)
 
 echo "Create test  pod"
 echo "-------------------------------"
 podman pod create --name swift-test-pod -p 5012:5011
+
 
 echo "Create image"
 echo "-------------------------------"
