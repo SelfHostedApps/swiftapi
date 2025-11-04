@@ -110,8 +110,8 @@ stages {
                                 ws(env.TEST_WS) {
                                         sh """
                                         cd devops/scripts/
-                                        bash /run_test_env.sh
-                                        bash /integration_test.sh
+                                        bash ./run_test_env.sh
+                                        bash ./integration_test.sh
                                         """
                                 }
                         }
