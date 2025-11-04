@@ -11,7 +11,7 @@ podman pod create --name swift-test-pod -p 5012:5011
 
 echo "Create image"
 echo "-------------------------------"
-podman build -t dotnet-app-image -f ../images/dotnet-image .
+podman build -t dotnet-app-image -f ./devops/images/dotnet-image .
 
 echo "Create test containers"
 echo "-------------------------------"
