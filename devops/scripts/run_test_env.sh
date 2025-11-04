@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#realligning directory
+cd "$(direname $0)"
+
+INI_SQL=$(realpath ../init.sql)
+
 echo "Create test  pod"
 echo "-------------------------------"
 podman pod create --name swift-test-pod -p 5012:5011
@@ -25,5 +30,5 @@ podman run --replace -d \
  -e POSTGRES_PASSWORD=swiftpass \
  -e POSTGRES_DB=swiftdb \
  -e PGPORT=5432 \
- -v ../init.sql:/docker-entrypoint-initdb.d/init.sql:ro \
+ -v "$INIT_SQL:/docker-entrypoint-initdb.d/init.sql:ro" \
  docker.io/postgres:16
