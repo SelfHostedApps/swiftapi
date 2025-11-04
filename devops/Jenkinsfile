@@ -97,8 +97,7 @@ stages {
 
         stage('E2E test') {
                 when {
-                        allOf {
-                                expression { env.BRANCH_NAME == 'main' }
+                        allOf { 
                                 expression { env.UNIT_TEST_PASSED == 'true' }
                         } 
                 }
@@ -110,8 +109,9 @@ stages {
                                 """
                                 ws(env.TEST_WS) {
                                         sh """
-                                        bash ./devops/scripts/run_test_env.sh
-                                        bash ./devops/scripts/integration_test.sh
+                                        cd devops/scripts/
+                                        bash /run_test_env.sh
+                                        bash /integration_test.sh
                                         """
                                 }
                         }
