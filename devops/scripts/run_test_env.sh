@@ -11,7 +11,11 @@ podman pod create --name swift-test-pod -p 5012:5011
 
 echo "Create image"
 echo "-------------------------------"
+echo "dotnet image"
 podman build -t dotnet-app-image -f ./devops/images/dotnet-image .
+
+echo "database image"
+podman build -t postgres-image -f ./devops/images/postgres-image .
 
 echo "Create test containers"
 echo "-------------------------------"
@@ -31,4 +35,4 @@ podman run --replace -d \
  -e POSTGRES_DB=swiftdb \
  -e PGPORT=5432 \
  -v "$INIT_SQL:/docker-entrypoint-initdb.d/init.sql:ro" \
- docker.io/postgres:16
+ postgres-image
