@@ -35,4 +35,4 @@ podman run --replace -d \
  -e POSTGRES_DB=swiftdb \
  -e PGPORT=5432 \
  -v "$INIT_SQL:/docker-entrypoint-initdb.d/init.sql:ro" \
- postgres-image
+ postgres-test-image
