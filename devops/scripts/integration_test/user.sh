@@ -9,8 +9,10 @@ CREATE_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -d '{"email":"testing@gmail.com","username":"tester","password":"12345","preference":"1"}' \
  http://127.0.0.1:5012/user/signup)
 
+set +e
 STATUS=$(echo "$CREATE_RESPONSE" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
 BODY=$(echo "$CREATE_RESPONSE" | sed -e "s/HTTPSTATUS:.*//g")
+set -e
 
 if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 300 ]; then
     echo ">> create an account failed" >&2
