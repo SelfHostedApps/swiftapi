@@ -119,7 +119,7 @@ stages {
                 post {
                         always {
                                 script {
-                                        sh 'podman pod rm -f swift-api-test'
+                                        sh 'podman pod rm -f swift-test-pod'
                                 }
                         }
                         success {
