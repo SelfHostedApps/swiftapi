@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #realligning directory
-cd "$(direname $0)"
+cd "$(dirname $0)"
 
 INIT_SQL=$(realpath ../init.sql)
 
