@@ -3,7 +3,7 @@
 #realligning directory
 cd "$(direname $0)"
 
-INI_SQL=$(realpath ../init.sql)
+INIT_SQL=$(realpath ../init.sql)
 
 echo "Create test  pod"
 echo "-------------------------------"
