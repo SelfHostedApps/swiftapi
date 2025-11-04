@@ -8,6 +8,7 @@ CREATE_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -H "Content-Type: application/json" \
  -d '{"email":"testing@gmail.com","username":"tester","password":"12345","preference":"1"}' \
  http://127.0.0.1:5012/user/signup)
+echo"curl succes"
 
 set +e
 STATUS=$(echo "$CREATE_RESPONSE" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
