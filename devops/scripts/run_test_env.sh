@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Create test pod"
+echo "Create test  pod"
 echo "-------------------------------"
 podman pod create --name swift-test-pod -p 5012:5011
 
