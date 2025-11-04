@@ -7,7 +7,7 @@ CREATE_RESPONSE=$(curl -w "HTTPSTATUS:%{http_code}" \
  -X POST \
  -H "Content-Type: application/json" \
  -d '{"email":"testing@gmail.com","username":"tester","password":"12345","preference":"1"}' \
- http://127.0.0.1:5012/user/signup)
+ http://swift-test-api:5012/user/signup)
 
 set +e
 STATUS=$(echo "$CREATE_RESPONSE" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
@@ -31,7 +31,7 @@ LOGIN_RESPONSE=$(curl -s -w "HTTPSTATUS:%{http_code}" \
  -X POST \
  -H "Content-Type: application/json" \
  -d '{"email":"testing@gmail.com","password":"12345"}' \
- http://127.0.0.1:5012/user/login)
+ http://swift-test-api:5012/user/login)
 
 STATUS=$(echo "$LOGIN_RESPONSE" | grep -o "HTTPSTATUS:[0-9]*" | cut -d: -f2)
 TOKEN=$(echo "$LOGIN_RESPONSE" | sed -e "s/HTTPSTATUS:.*//g" | jq -r '.token')

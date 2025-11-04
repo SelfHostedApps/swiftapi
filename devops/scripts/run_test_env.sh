@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#realligning directory
 echo "Create test  pod"
 echo "-------------------------------"
-podman pod create --name swift-test-pod -p 5012:5011
+podman pod create --name swift-test-pod --network ci_net -p 5012:5011
 
 
 echo "Create image"
